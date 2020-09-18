@@ -1,17 +1,37 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <h1>Todo application</h1><hr>
+    <TodoList 
+      v-bind:todos="todos"
+      @todo-remove="removeTodo"
+    />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import TodoList from './components/TodoList';
 export default {
   name: 'App',
-  components: {
-    HelloWorld
+  data() {
+    return {
+      todos: [
+        {id: 1, title: 'Купить хлеб', completed: false},
+        {id: 2, title: 'Купить масло', completed: false},
+        {id: 3, title: 'Купить пиво', completed: false}
+      ]
+    }
+  },
+  components: {TodoList},
+  methods: {
+    removeTodo(id) {
+      let x = 1;
+      this.todos = this.todos.filter(obj => obj.id !== id);
+      this.todos = this.todos.map(obj => {
+        obj.id = x;
+        x++;
+        return obj;
+      })
+    }
   }
 }
 </script>
