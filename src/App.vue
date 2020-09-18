@@ -15,9 +15,9 @@ export default {
   data() {
     return {
       todos: [
-        {id: 1, title: 'Купить хлеб', completed: false},
-        {id: 2, title: 'Купить масло', completed: false},
-        {id: 3, title: 'Купить пиво', completed: false}
+        {id: 1, title: 'Buy oil', completed: false},
+        {id: 2, title: 'Buy bread', completed: false},
+        {id: 3, title: 'Buy beer', completed: false}
       ]
     }
   },
