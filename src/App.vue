@@ -1,17 +1,23 @@
 <template>
   <div id="app">
-    <h1>Todo application</h1><hr>
+    <h1>Todo application</h1>
+    <hr>
     <TodoList 
       v-bind:todos="todos"
       @todo-remove="removeTodo"
+    />
+    <AddTodo 
+      @add-todo="onSubmit"
     />
   </div>
 </template>
 
 <script>
 import TodoList from './components/TodoList';
+import AddTodo from './components/AddTodo';
 export default {
   name: 'App',
+  components: {TodoList, AddTodo},
   data() {
     return {
       todos: [
@@ -21,16 +27,17 @@ export default {
       ]
     }
   },
-  components: {TodoList},
   methods: {
     removeTodo(id) {
-      let x = 1;
       this.todos = this.todos.filter(obj => obj.id !== id);
-      this.todos = this.todos.map(obj => {
-        obj.id = x;
-        x++;
-        return obj;
-      })
+    },
+    onSubmit(value) {
+      const newObj = {
+        id: new Date(), 
+        title: value, 
+        completed: false
+      };
+      this.todos.push(newObj);
     }
   }
 }
