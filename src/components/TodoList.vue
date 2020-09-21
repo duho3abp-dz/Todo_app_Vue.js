@@ -6,6 +6,7 @@
             v-bind:todo="todo"
             v-bind:index="i"
             @todo-remove="removeTodo"
+            :key="i"
         />
     </ul>
   </div>
