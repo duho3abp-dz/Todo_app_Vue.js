@@ -1,20 +1,28 @@
 <template>
   <div>
+    <h2>Todo List</h2>
+    <router-link to="/">Home</router-link>
+
+    <hr>
+    <AddTodo @add-todo="onSubmit" />
+    <hr>
+
+    <select v-model="filter">
+        <option value="all">All</option>
+        <option value="completed">Completed</option>
+        <option value="not-completed">Not-completed</option>
+    </select>
+    
+
     <Error v-if="error"/>
-    <Loader v-else-if="loading"/>
+    <Loader v-else-if="loading" />
     <TodoList 
-        v-bind:todos="todos"
-        v-else-if="todos.length"
+        v-bind:todos="filteredTodos"
+        v-else-if="filteredTodos.length"
         @todo-remove="removeTodo"
     />
     <p v-else>No Todos!</p>
-    
-    <hr>
-    <AddTodo 
-      @add-todo="onSubmit"
-    />
-    <hr>
-    <router-link to="/">Home</router-link>
+
   </div>
 </template>
 
@@ -30,6 +38,7 @@ export default {
   data() {
     return {
       error: false,
+      filter: 'all',
       loading: true,
       todos: []
     }
@@ -40,6 +49,19 @@ export default {
         .then(json => this.todos = json)
         .catch(err => this.error = true)
         .finally(res => this.loading = false);
+  },
+  computed: {
+      filteredTodos() {
+          if (this.filter === 'all') {
+              return this.todos;
+          } 
+          if (this.filter === 'completed') {
+              return this.todos.filter(obj => obj.completed);
+          } 
+          if (this.filter === 'not-completed') {
+              return this.todos.filter(obj => !obj.completed);
+          } 
+      }
   },
   methods: {
     removeTodo(id) {
@@ -56,3 +78,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+    select {
+        margin-bottom: 10px;
+    }
+</style>

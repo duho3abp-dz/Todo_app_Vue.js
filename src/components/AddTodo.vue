@@ -26,8 +26,9 @@ export default {
 <style scoped>
     form {
         display: flex;
+        justify-content: center;
     }
     input {
-        width: 40%;
+        width: 80%;
     }
 </style>
