@@ -1,9 +1,14 @@
 <template>
   <div>
+    <Error v-if="error"/>
+    <Loader v-else-if="loading"/>
     <TodoList 
-      v-bind:todos="todos"
-      @todo-remove="removeTodo"
+        v-bind:todos="todos"
+        v-else-if="todos.length"
+        @todo-remove="removeTodo"
     />
+    <p v-else>No Todos!</p>
+    
     <hr>
     <AddTodo 
       @add-todo="onSubmit"
@@ -16,17 +21,25 @@
 <script>
 import TodoList from '@/components/TodoList';
 import AddTodo from '@/components/AddTodo';
+import Loader from '@/components/Loader';
+import Error from '@/components/Error';
+
 export default {
   name: 'App',
-  components: {TodoList, AddTodo},
+  components: {TodoList, AddTodo, Loader, Error},
   data() {
     return {
-      todos: [
-        {id: 1, title: 'Buy oil', completed: false},
-        {id: 2, title: 'Buy bread', completed: false},
-        {id: 3, title: 'Buy beer', completed: false}
-      ]
+      error: false,
+      loading: true,
+      todos: []
     }
+  },
+  mounted() {
+      fetch('https://jsonplaceholder.typicode.com/todos?_limit=3')
+        .then(response => response.json())
+        .then(json => this.todos = json)
+        .catch(err => this.error = true)
+        .finally(res => this.loading = false);
   },
   methods: {
     removeTodo(id) {
